@@ -1,6 +1,6 @@
 # GR-00
 
-Humanoid robot — part of the GR-0X project.
+Development of an opensource humanoid morphology aware reserach plataform.
 
 ## Structure
 - `jetson/` — RL agent and simulation (Jetson Orin)
