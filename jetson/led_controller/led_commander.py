@@ -160,7 +160,7 @@ def draw(stdscr, input_buf: list):
     curses.init_pair(3, curses.COLOR_YELLOW,  -1)
     curses.init_pair(4, curses.COLOR_RED,     -1)
     curses.init_pair(5, curses.COLOR_WHITE,   -1)
-    curses.init_pair(6, curses.COLOR_BLACK,   -1)
+    curses.init_pair(6, curses.COLOR_MAGENTA, -1)   # Changed from BLACK to MAGENTA (bright & cool)
     curses.init_pair(7, curses.COLOR_MAGENTA, -1)
 
     CYAN    = curses.color_pair(1)
@@ -168,7 +168,7 @@ def draw(stdscr, input_buf: list):
     YELLOW  = curses.color_pair(3)
     RED     = curses.color_pair(4)
     NORMAL  = curses.color_pair(5)
-    MUTED   = curses.color_pair(6)
+    MUTED   = curses.color_pair(6)          # Now bright Magenta
     MAGENTA = curses.color_pair(7)
     BOLD    = curses.A_BOLD
 
@@ -194,10 +194,10 @@ def draw(stdscr, input_buf: list):
         stdscr.addstr(3, 0, '-' * w)
         stdscr.attroff(CYAN | BOLD)
 
-        # LED Strip
-        stdscr.attron(MUTED)
+        # LED Strip - "LED ARRAY" now in bright Red + Bold (very visible)
+        stdscr.attron(RED | BOLD)
         stdscr.addstr(5, 2, '[ LED ARRAY ]')
-        stdscr.attroff(MUTED)
+        stdscr.attroff(RED | BOLD)
 
         cell_w = min(9, (w - 4) // 8)
         for i in range(1, 9):
@@ -216,7 +216,7 @@ def draw(stdscr, input_buf: list):
             else:
                 bulb  = '(   )'
                 label = f' L{i:02d} '
-                color = MUTED
+                color = MUTED | BOLD          # Off LEDs now also use bright magenta
 
             if x + cell_w < w:
                 stdscr.attron(color)
@@ -244,9 +244,11 @@ def draw(stdscr, input_buf: list):
 
         # Help
         help_row = 12
-        stdscr.attron(MUTED)
+        stdscr.attron(MUTED | BOLD)
         stdscr.addstr(help_row, 2, '[ COMMANDS ]')
-        stdscr.attroff(MUTED)
+        stdscr.attroff(MUTED | BOLD)
+
+        # ... (rest of help and log stays the same)
 
         cmds = [
             ('on <id|all>',    'turn on'),
@@ -308,7 +310,7 @@ def draw(stdscr, input_buf: list):
 
         stdscr.refresh()
 
-        # Input
+        # Input handling (unchanged)
         try:
             ch = stdscr.getch()
         except:
