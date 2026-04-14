@@ -1,0 +1,30 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 500
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+    joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+joint_trajectory_controller:
+  ros__parameters:
+    #UB and UL are not active(yet) until 
+    joints:
+      - HPR
+      - UTR
+      - LTR
+      - FR
+      - HPL
+      - UTL
+      - LTL
+      - FL
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    #publish rates
+    state_publish_rate: 500.0
+    action_monitor_rate: 200.0
+    #allows incomplete messages gud
+    allow_partial_joints_goal: true

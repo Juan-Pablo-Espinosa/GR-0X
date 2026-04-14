@@ -1,0 +1,26 @@
+<launch>
+  <!--cleanup, should be not neccisary with partitions "should"-->
+  <executable cmd="pkill -f 'ign gazebo' || true" output="screen"/>
+  <executable cmd="pkill -f 'gz sim' || true" output="screen"/>
+
+  <!-- Isolation on LAN allows multiple instances and also ensures that the controllers dont interfere after thir closed-->
+  <set_env name="IGN_PARTITION" value="growbot"/>
+
+  <arg name="bridge_name" default="growbot_bridge"/>
+  <arg name="config_file" default="$(find-pkg-share growbot_base)/config/bridge.yaml"/>
+
+  <include file="$(find-pkg-share ros_gz_sim)/launch/gz_sim.launch.py">
+    <arg name="gz_args" value="-r empty.sdf"/>
+  </include>
+
+  <node pkg="tf2_ros" exec="static_transform_publisher" name="tf_footprint_base"
+        args="--x 0 --y 0 --z 0 --qx 0 --qy 0 --qz 0 --qw 1 --frame-id base_link --child-frame-id base_footprint" />
+
+  <node pkg="ros_gz_sim" exec="create" name="spawn_growbot" output="screen"
+        args="-world empty -file $(find-pkg-share growbot_base)/urdf/growbot.urdf -name growbot -x 0 -y 0 -z 0.5" />
+        
+        <node pkg="ros_gz_bridge" exec="parameter_bridge" name="$(var bridge_name)" output="screen">
+    <param name="config_file" value="$(var config_file)"/>
+  </node>
+</launch>
+

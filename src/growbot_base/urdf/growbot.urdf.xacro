@@ -1,0 +1,1020 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot
+  name="growbot"
+  xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com)
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+
+
+<xacro:macro name="dummy_inertial">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="1e-6"/>
+    <inertia ixx="1e-9" ixy="0" ixz="0" iyy="1e-9" iyz="0" izz="1e-9"/>
+  </inertial>
+</xacro:macro>
+
+
+
+
+<xacro:arg name="use_sim" default="true"/>
+<xacro:arg name="ns" default=""/>
+<xacro:property name="use_sim" value="$(arg use_sim)"/>
+<xacro:property name="ns" value="$(arg ns)"/>
+
+<!-- Shared joint interface list and ros2_control-->
+<xacro:macro name="growbot_joint_interfaces">
+
+  <joint name="HPR">
+    <param name="motor_id">1</param>
+    <command_interface name="position"/>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+  <joint name="UTR">
+    <param name="motor_id">2</param>
+    <command_interface name="position"/>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+  <joint name="LTR">
+    <param name="motor_id">3</param>
+    <command_interface name="position"/>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+  <joint name="FR">
+    <param name="motor_id">4</param>
+    <command_interface name="position"/>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+  <!-- Left leg -->
+  <joint name="HPL">
+    <param name="motor_id">5</param>
+    <command_interface name="position"/>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+  <joint name="UTL">
+    <param name="motor_id">6</param>
+    <command_interface name="position"/>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+  <joint name="LTL">
+    <param name="motor_id">7</param>
+    <command_interface name="position"/>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+  <joint name="FL">
+    <param name="motor_id">8</param>
+    <command_interface name="position"/>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+
+  <!-- labeled passive for robstride as these are pololu-->
+  <joint name="UBR"><param name="passive">true</param></joint>
+  <joint name="LBR"><param name="passive">true</param></joint>
+  <joint name="UBL"><param name="passive">true</param></joint>
+  <joint name="LBL"><param name="passive">true</param></joint>
+</xacro:macro>
+
+<xacro:if value="${use_sim}">
+  <gazebo>
+    <plugin filename="gz_ros2_control-system"
+            name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>$(find growbot_base)/config/controller.yaml</parameters>
+      <xacro:if value="${ns != ''}">
+        <ros>
+          <namespace>${ns}</namespace>
+        </ros>
+      </xacro:if>
+    </plugin>
+  </gazebo>
+
+  <ros2_control name="GazeboSimSystem" type="system">
+    <hardware>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+    </hardware>
+    <xacro:growbot_joint_interfaces/>
+  </ros2_control>
+</xacro:if>
+
+<!-- hardware stuff-->
+<xacro:unless value="${use_sim}">
+  <ros2_control name="RobStrideSystem" type="system">
+    <hardware>
+      <plugin>growbot_hardware/RobStrideSystem</plugin>
+      <param name="can_interface">can0</param>
+    </hardware>
+    <xacro:growbot_joint_interfaces/>
+  </ros2_control>
+</xacro:unless>
+
+
+
+
+
+
+
+ <!-- <node pkg="ros_gz_bridge" exec="parameter_bridge" name="$(var bridge_name)" output="screen">
+    <param name="config_file" value="$(var config_file)"/>
+  </node> -->
+
+  <link
+    name="Hip_base">
+    <inertial>
+      <origin
+        xyz="1.38777878078145E-17 0 -0.0608999220171339"
+        rpy="0 0 0" />
+      <mass
+        value="2.16985301872214" />
+      <inertia
+        ixx="0.00584785662925047"
+        ixy="-2.35645275808477E-19"
+        ixz="-3.18044375661961E-19"
+        iyy="0.00611255358513236"
+        iyz="-2.57293776215433E-19"
+        izz="0.00582916453397125" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Hip_base.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.772549019607843 0.588235294117647 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Hip_base.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <!--dummy base link DO NOT REMOVE UYKWYD!-->
+  <link name="base_link">
+    <xacro:dummy_inertial/>
+  </link>
+  <joint
+    name="base_joint"
+    type="fixed">
+    <parent link="base_link"/>
+    <child link="Hip_base"/>
+    <!--mess with blw if you want to move base location-->
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0"/>
+  </joint>
+
+  <!--footprint for use in stuff like nav2 convience-->
+  <link name="base_footprint">
+    <xacro:dummy_inertial/>
+  </link>
+  <joint
+    name="footprint_robot" type="fixed">
+    <parent link="Hip_base"/>
+    <child link="base_footprint"/>
+  </joint>
+ 
+
+  <link
+    name="Hip_Pitch_L">
+    <inertial>
+      <origin
+        xyz="-1.0563577401701E-07 0.0216931911827515 -0.00241845976396458"
+        rpy="0 0 0" />
+      <mass
+        value="0.32535602722819" />
+      <inertia
+        ixx="0.000594281721656322"
+        ixy="4.33002987041711E-09"
+        ixz="1.15119565169926E-09"
+        iyy="0.000785087098155215"
+        iyz="4.04257713811968E-05"
+        izz="0.000928754332776135" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Hip_Pitch_L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.772549019607843 0.588235294117647 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Hip_Pitch_L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="HPL"
+    type="revolute">
+    <origin
+      xyz="0 0.07625 -0.0675"
+      rpy="0 0 0" />
+    <parent
+      link="Hip_base" />
+    <child
+      link="Hip_Pitch_L" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="120"
+      velocity="4" />
+  </joint>
+  <link
+    name="UpperLeg_Top_L">
+    <inertial>
+      <origin
+        xyz="-0.0525 2.66134278503749E-09 -0.0309840614697206"
+        rpy="0 0 0" />
+      <mass
+        value="1.40303873996329" />
+      <inertia
+        ixx="0.00499778747880465"
+        ixy="8.95796534639693E-10"
+        ixz="2.64773100463626E-20"
+        iyy="0.0046917975627395"
+        iyz="4.62982209728921E-10"
+        izz="0.00144288406396799" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/UpperLeg_Top_L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.772549019607843 0.588235294117647 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/UpperLeg_Top_L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="UTL"
+    type="revolute">
+    <origin
+      xyz="0.0525 0.0570760185919361 -0.0163013162520939"
+      rpy="0 0 0" />
+    <parent
+      link="Hip_Pitch_L" />
+    <child
+      link="UpperLeg_Top_L" />
+    <axis
+      xyz="-1 0 0" />
+    <limit
+      lower="-1.57"
+      upper="0.4"
+      effort="60"
+      velocity="4" />
+  </joint>
+  <link
+    name="UpperLeg_Bottom_L">
+    <inertial>
+      <origin
+        xyz="2.83536091549852E-08 1.2057134679555E-08 -0.209677014672553"
+        rpy="0 0 0" />
+      <mass
+        value="1.98499353977905" />
+      <inertia
+        ixx="0.0126480228919219"
+        ixy="2.07602217853427E-09"
+        ixz="-2.17114898302252E-09"
+        iyy="0.0134297424365327"
+        iyz="-1.24230068195983E-09"
+        izz="0.00223915994987981" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/UpperLeg_Bottom_L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.772549019607843 0.588235294117647 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/UpperLeg_Bottom_L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="UBL"
+    type="prismatic">
+    <origin
+      xyz="-0.0525 0 -0.07"
+      rpy="0 0 0" />
+    <parent
+      link="UpperLeg_Top_L" />
+    <child
+      link="UpperLeg_Bottom_L" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-0.085"
+      upper="0"
+      effort="120"
+      velocity="2" />
+  </joint>
+  <link
+    name="LowerLeg_Top_L">
+    <inertial>
+      <origin
+        xyz="-1.81442389377007E-07 -0.0449958888579158 -0.0881149504565347"
+        rpy="0 0 0" />
+      <mass
+        value="0.719066454277415" />
+      <inertia
+        ixx="0.00286349087520249"
+        ixy="8.57372292351143E-09"
+        ixz="-7.28871991087424E-09"
+        iyy="0.00274910774517955"
+        iyz="3.6977839726651E-06"
+        izz="0.000937716075323998" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/LowerLeg_Top_L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.772549019607843 0.588235294117647 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/LowerLeg_Top_L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LTL"
+    type="revolute">
+    <origin
+      xyz="0 0.045 -0.26"
+      rpy="0 0 0" />
+    <parent
+      link="UpperLeg_Bottom_L" />
+    <child
+      link="LowerLeg_Top_L" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.57"
+      upper="0"
+      effort="120"
+      velocity="4" />
+  </joint>
+  <link
+    name="Fourbar_L">
+    <inertial>
+      <origin
+        xyz="-0.069360430268336 -0.0133378957329969 -0.0338766338689787"
+        rpy="0 0 0" />
+      <mass
+        value="0.744008715873282" />
+      <inertia
+        ixx="0.00359937747479461"
+        ixy="-0.00013879125898873"
+        ixz="-0.000799710952795588"
+        iyy="0.00465109326901828"
+        iyz="-0.000453354697138623"
+        izz="0.00134008808450958" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Fourbar_L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.772549019607843 0.588235294117647 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Fourbar_L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="FbL"
+    type="fixed">
+    <origin
+      xyz="0.0062769136818067 0.0005 -0.113"
+      rpy="0 0 0" />
+    <parent
+      link="LowerLeg_Top_L" />
+    <child
+      link="Fourbar_L" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="LowerLeg_Bottom_L">
+    <inertial>
+      <origin
+        xyz="0 0 -0.124618842451205"
+        rpy="0 0 0" />
+      <mass
+        value="0.307612145233778" />
+      <inertia
+        ixx="0.00090072644484076"
+        ixy="3.41212002678124E-22"
+        ixz="3.15021938345415E-20"
+        iyy="0.000899554746223108"
+        iyz="1.1884173119214E-21"
+        izz="0.000162689372858535" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/LowerLeg_Bottom_L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.772549019607843 0.588235294117647 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/LowerLeg_Bottom_L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LBL"
+    type="prismatic">
+    <origin
+      xyz="0 -0.045 -0.0955"
+      rpy="0 0 0" />
+    <parent
+      link="LowerLeg_Top_L" />
+    <child
+      link="LowerLeg_Bottom_L" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-0.085"
+      upper="0"
+      effort="120"
+      velocity="2" />
+  </joint>
+  <link
+    name="Feet_L">
+    <inertial>
+      <origin
+        xyz="0.0332952666356012 -0.02 -0.0326573535663368"
+        rpy="0 0 0" />
+      <mass
+        value="0.19986246220588" />
+      <inertia
+        ixx="9.87617063323067E-05"
+        ixy="-1.22084292013499E-09"
+        ixz="9.85803273885539E-06"
+        iyy="0.000513345996215315"
+        iyz="-1.08319964936551E-19"
+        izz="0.000566177747085522" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Feet_L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.772549019607843 0.588235294117647 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Feet_L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="FL"
+    type="revolute">
+    <origin
+      xyz="0 0.02 -0.2125"
+      rpy="0 0 0" />
+    <parent
+      link="LowerLeg_Bottom_L" />
+    <child
+      link="Feet_L" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-0.4"
+      upper="0.4"
+      effort="17"
+      velocity="2" />
+  </joint>
+  <link
+    name="Hip_Pitch_R">
+    <inertial>
+      <origin
+        xyz="-1.11548962332952E-05 -0.0216931946701764 -0.00241844109990508"
+        rpy="0 0 0" />
+      <mass
+        value="0.325356061761199" />
+      <inertia
+        ixx="0.000594289138978408"
+        ixy="-1.8378200133792E-07"
+        ixz="1.55464749499309E-06"
+        iyy="0.000785087178928382"
+        iyz="-4.04253816553895E-05"
+        izz="0.000928747380498247" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Hip_Pitch_R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.772549019607843 0.588235294117647 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Hip_Pitch_R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="HPR"
+    type="revolute">
+    <origin
+      xyz="0 -0.07625 -0.0675"
+      rpy="0 0 0" />
+    <parent
+      link="Hip_base" />
+    <child
+      link="Hip_Pitch_R" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="120"
+      velocity="4" />
+  </joint>
+  <link
+    name="UpperLeg_Top_R">
+    <inertial>
+      <origin
+        xyz="-0.0526435588731193 2.81388010114902E-09 -0.0307395179444002"
+        rpy="0 0 0" />
+      <mass
+        value="1.4030387399691" />
+      <inertia
+        ixx="0.00499771055849278"
+        ixy="9.08794094317701E-10"
+        ixz="-1.65359274409475E-05"
+        iyy="0.00469179756214755"
+        iyz="4.78239382095678E-10"
+        izz="0.00144296098359919" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/UpperLeg_Top_R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.772549019607843 0.588235294117647 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/UpperLeg_Top_R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="UTR"
+    type="revolute">
+    <origin
+      xyz="0.0524236050313718 -0.0570760185919361 -0.0165453482001895"
+      rpy="0 0 0" />
+    <parent
+      link="Hip_Pitch_R" />
+    <child
+      link="UpperLeg_Top_R" />
+    <axis
+      xyz="-0.999989181311603 0 0.00465158679917547" />
+    <limit
+      lower="-0.4"
+      upper="1.57"
+      effort="60"
+      velocity="4" />
+  </joint>
+  <link
+    name="UpperLeg_Bottom_R">
+    <inertial>
+      <origin
+        xyz="-0.000975304415357731 1.12220205350511E-08 -0.209674746330614"
+        rpy="0 0 0" />
+      <mass
+        value="1.98499354243987" />
+      <inertia
+        ixx="0.0126477976360464"
+        ixy="2.09090443798804E-09"
+        ixz="-4.84190466806335E-05"
+        iyy="0.0134297424693075"
+        iyz="-1.19394871552355E-09"
+        izz="0.00223938518945266" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/UpperLeg_Bottom_R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.772549019607843 0.588235294117647 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/UpperLeg_Bottom_R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="UBR"
+    type="prismatic">
+    <origin
+      xyz="-0.052825 0 -0.06981"
+      rpy="0 0 0" />
+    <parent
+      link="UpperLeg_Top_R" />
+    <child
+      link="UpperLeg_Bottom_R" />
+    <axis
+      xyz="0.0046516 0 0.99999" />
+    <limit
+      lower="-0.085"
+      upper="0"
+      effort="120"
+      velocity="2" />
+  </joint>
+  <link
+    name="LowerLeg_Top_R">
+    <inertial>
+      <origin
+        xyz="1.81442389363129E-07 0.0449958888579158 -0.0881149504565346"
+        rpy="0 0 0" />
+      <mass
+        value="0.719066454277415" />
+      <inertia
+        ixx="0.00286349087520249"
+        ixy="8.57372292336113E-09"
+        ixz="7.28871991081678E-09"
+        iyy="0.00274910774517955"
+        iyz="-3.69778397266554E-06"
+        izz="0.000937716075323998" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/LowerLeg_Top_R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.772549019607843 0.588235294117647 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/LowerLeg_Top_R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LTR"
+    type="revolute">
+    <origin
+      xyz="-0.0012094125677856 -0.045 -0.259997187141017"
+      rpy="0 0 0" />
+    <parent
+      link="UpperLeg_Bottom_R" />
+    <child
+      link="LowerLeg_Top_R" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.57"
+      upper="0"
+      effort="120"
+      velocity="4" />
+  </joint>
+  <link
+    name="Fourbar_R">
+    <inertial>
+      <origin
+        xyz="-0.0693604302683361 0.0133378957329969 -0.0338766338689787"
+        rpy="0 0 0" />
+      <mass
+        value="0.744008715873282" />
+      <inertia
+        ixx="0.00359937747479461"
+        ixy="0.00013879125898873"
+        ixz="-0.000799710952795588"
+        iyy="0.00465109326901829"
+        iyz="0.000453354697138624"
+        izz="0.00134008808450958" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Fourbar_R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.772549019607843 0.588235294117647 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Fourbar_R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="FBR"
+    type="fixed">
+    <origin
+      xyz="0.00627691368180673 -0.000500000000000028 -0.113"
+      rpy="0 0 0" />
+    <parent
+      link="LowerLeg_Top_R" />
+    <child
+      link="Fourbar_R" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="LowerLeg_Bottom_R">
+    <inertial>
+      <origin
+        xyz="0 1.38777878078145E-17 -0.124618842451205"
+        rpy="0 0 0" />
+      <mass
+        value="0.307612145233778" />
+      <inertia
+        ixx="0.000900726444840759"
+        ixy="3.05669085732486E-22"
+        ixz="2.91268507661966E-20"
+        iyy="0.000899554746223108"
+        iyz="-1.29925563291623E-20"
+        izz="0.000162689372858535" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/LowerLeg_Bottom_R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.772549019607843 0.588235294117647 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/LowerLeg_Bottom_R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LBR"
+    type="prismatic">
+    <origin
+      xyz="0 0.045 -0.095501"
+      rpy="0 0 0" />
+    <parent
+      link="LowerLeg_Top_R" />
+    <child
+      link="LowerLeg_Bottom_R" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-0.085"
+      upper="0"
+      effort="120"
+      velocity="2" />
+  </joint>
+  <link
+    name="Feet_R">
+    <inertial>
+      <origin
+        xyz="0.0332952666356011 0.0200000000000001 -0.0326573535663368"
+        rpy="0 0 0" />
+      <mass
+        value="0.199862462205881" />
+      <inertia
+        ixx="9.87617063323069E-05"
+        ixy="-1.22084292015837E-09"
+        ixz="9.85803273885524E-06"
+        iyy="0.000513345996215317"
+        iyz="7.57427686054585E-20"
+        izz="0.000566177747085524" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Feet_R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.772549019607843 0.588235294117647 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Feet_R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="FR"
+    type="revolute">
+    <origin
+      xyz="0 -0.02 -0.2125"
+      rpy="0 0 0" />
+    <parent
+      link="LowerLeg_Bottom_R" />
+    <child
+      link="Feet_R" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-0.4"
+      upper="0.4"
+      effort="17"
+      velocity="2" />
+  </joint>
+
+  <!-- ============================================================ -->
+  <!-- Gazebo material / friction tuning                             -->
+  <!-- ============================================================ -->
+
+  <!-- Foot contact: high mu so the biped doesn't slide on ground.
+       ODE params tuned for a soft-ish rubber-on-ground contact. -->
+  <xacro:macro name="foot_gazebo" params="link_name">
+    <gazebo reference="${link_name}">
+      <mu1>1.2</mu1>
+      <mu2>1.2</mu2>
+      <kp>1e6</kp>
+      <kd>100</kd>
+      <minDepth>0.001</minDepth>
+      <maxVel>0.1</maxVel>
+      <fdir1>1 0 0</fdir1>
+      <self_collide>false</self_collide>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:foot_gazebo link_name="Feet_L"/>
+  <xacro:foot_gazebo link_name="Feet_R"/>
+
+</robot>

@@ -1,0 +1,9 @@
+<library path="growbot_hardware">
+  <class name="growbot_hardware/RobStrideSystem"
+         type="growbot_hardware::RobStrideSystem"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+ros2 control hardware drivers
+    </description>
+  </class>
+</library>

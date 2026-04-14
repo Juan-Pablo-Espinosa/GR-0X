@@ -1,0 +1,1225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+
+<robot
+  name="growbot">
+    <!-- Common ROS base frames -->
+  <link name="base_footprint"/>
+  <link name="base_link"/>
+
+
+  <joint name="base_footprint_to_base_link" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Make Center a child of base_link (so Center can keep its inertial) -->
+  <joint name="base_link_to_Center" type="fixed">
+    <parent link="base_link"/>
+    <child link="Center"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+  <link
+    name="Center">
+    <inertial>
+      <origin
+        xyz="-0.00168622520897688 -0.135799999965222 0.728721311650455"
+        rpy="0 0 0" />
+      <mass
+        value="2.00914950311114" />
+      <inertia
+        ixx="0.00336426036684631"
+        ixy="-4.39347775699011E-05"
+        ixz="2.21435248826384E-18"
+        iyy="0.00383067188978387"
+        iyz="1.29672294968782E-18"
+        izz="0.00196925138980645" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Center.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Center.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Calf_Prismatic_Left"
+    type="prismatic">
+    <origin
+      xyz="0 0 -0.281"
+      rpy="0 0 0" />
+    <parent
+      link="Upper_Calf_Left" />
+    <child
+      link="Lower_Calf_Left" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-0.091"
+      upper="0"
+      effort="100"
+      velocity="1" />
+  </joint>
+  <link
+    name="Hip_Pitch_Right">
+    <inertial>
+      <origin
+        xyz="-0.00186585962403507 -0.0380536813635787 -0.0120251174948383"
+        rpy="0 0 0" />
+      <mass
+        value="0.555373494422505" />
+      <inertia
+        ixx="0.000826135189458119"
+        ixy="2.27376006299108E-05"
+        ixz="5.1025089318783E-06"
+        iyy="0.00140202973894453"
+        iyz="-6.81976322347102E-05"
+        izz="0.00151258139369779" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Hip_Pitch_Right.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Hip_Pitch_Right.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Hip_Forward_Right"
+    type="revolute">
+    <origin
+      xyz="0.00117170298055136 -0.200466666631889 0.7322604109441"
+      rpy="0 0 0" />
+    <parent
+      link="Center" />
+    <child
+      link="Hip_Pitch_Right" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="100"
+      velocity="1" />
+  </joint>
+  <link
+    name="Upper_Thigh_Right">
+    <inertial>
+      <origin
+        xyz="-0.00262170043296694 -9.07451781876345E-05 -0.086034648811675"
+        rpy="0 0 0" />
+      <mass
+        value="0.963249454363066" />
+      <inertia
+        ixx="0.00133999068746769"
+        ixy="-6.74013850649159E-07"
+        ixz="5.07512957736631E-06"
+        iyy="0.00113454565271432"
+        iyz="-4.57903006998258E-06"
+        izz="0.0004688579154953" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Upper_Thigh_Right.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Upper_Thigh_Right.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Hip_Thigh_Right"
+    type="revolute">
+    <origin
+      xyz="-0.000771702450901746 -0.0693333339215143 -0.0237604152867126"
+      rpy="0 0 0" />
+    <parent
+      link="Hip_Pitch_Right" />
+    <child
+      link="Upper_Thigh_Right" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-3.14"
+      upper="0"
+      effort="100"
+      velocity="1" />
+  </joint>
+  <link
+    name="Lower_Thigh_right">
+    <inertial>
+      <origin
+        xyz="-0.000200936247169325 -0.000875191749592774 -0.152010909578842"
+        rpy="0 0 0" />
+      <mass
+        value="0.962966169730279" />
+      <inertia
+        ixx="0.00251869297171265"
+        ixy="-1.12192810828349E-10"
+        ixz="1.40904934294929E-06"
+        iyy="0.00324539022670924"
+        iyz="-8.32623749471051E-05"
+        izz="0.00120324727768126" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Lower_Thigh_right.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Lower_Thigh_right.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Thigh_Prismatic_Right"
+    type="prismatic">
+    <origin
+      xyz="0 0 -0.265"
+      rpy="0 0 0" />
+    <parent
+      link="Upper_Thigh_Right" />
+    <child
+      link="Lower_Thigh_right" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-0.091"
+      upper="0"
+      effort="100"
+      velocity="5" />
+  </joint>
+  <link
+    name="Upper_Calf_Right">
+    <inertial>
+      <origin
+        xyz="-2.96330769924413E-05 -0.00842282752955459 -0.125432470790914"
+        rpy="0 0 0" />
+      <mass
+        value="1.01964403283914" />
+      <inertia
+        ixx="0.00202081851904576"
+        ixy="3.85009524083605E-07"
+        ixz="-6.53462813640334E-06"
+        iyy="0.00186828520826864"
+        iyz="-0.000133698643086674"
+        izz="0.000909756995742566" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Upper_Calf_Right.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 0.949019607843137 0.898039215686275 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Upper_Calf_Right.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Knee_Right"
+    type="revolute">
+    <origin
+      xyz="0 -0.00220000035647239 -0.162500000000419"
+      rpy="0 0 0" />
+    <parent
+      link="Lower_Thigh_right" />
+    <child
+      link="Upper_Calf_Right" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.6"
+      upper="1.6"
+      effort="100"
+      velocity="1" />
+  </joint>
+  <link
+    name="Knee_Tendon_Right">
+    <inertial>
+      <origin
+        xyz="-0.0416099602673698 -6.72056448214331E-05 -0.0054705091143481"
+        rpy="0 0 0" />
+      <mass
+        value="0.040512131127183" />
+      <inertia
+        ixx="3.76652095147992E-06"
+        ixy="9.25706054231564E-08"
+        ixz="-4.06853303027063E-06"
+        iyy="3.72969259716028E-05"
+        iyz="1.21703634762936E-08"
+        izz="3.41778314807171E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Knee_Tendon_Right.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Knee_Tendon_Right.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="KT_Right"
+    type="revolute">
+    <origin
+      xyz="0 -0.0469999999999994 -0.0310000000000015"
+      rpy="0 0 0" />
+    <parent
+      link="Upper_Calf_Right" />
+    <child
+      link="Knee_Tendon_Right" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.2"
+      upper="1.2"
+      effort="100"
+      velocity="1" />
+  </joint>
+  <link
+    name="Lower_Calf_Right">
+    <inertial>
+      <origin
+        xyz="-8.88178419700125E-16 -2.77555756156289E-16 -0.0604129552713762"
+        rpy="0 0 0" />
+      <mass
+        value="0.121668100006614" />
+      <inertia
+        ixx="0.000265288052550417"
+        ixy="-5.63427323197942E-20"
+        ixz="-5.19379231167424E-18"
+        iyy="0.000262930775623957"
+        iyz="-4.0608681282725E-19"
+        izz="8.75998339639687E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Lower_Calf_Right.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Lower_Calf_Right.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Calf_Prismatic_Right"
+    type="prismatic">
+    <origin
+      xyz="0 0 -0.285999999990025"
+      rpy="0 0 0" />
+    <parent
+      link="Upper_Calf_Right" />
+    <child
+      link="Lower_Calf_Right" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-0.091"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Knee_Tendon_Motor_Right">
+    <inertial>
+      <origin
+        xyz="-0.0400026138013436 0.000749857310544277 -0.00525918943425718"
+        rpy="0 0 0" />
+      <mass
+        value="0.0687760119883091" />
+      <inertia
+        ixx="7.9930090777083E-06"
+        ixy="-1.92300954337005E-06"
+        ixz="-7.18384781022086E-06"
+        iyy="6.64600151508866E-05"
+        iyz="-2.52820266262892E-07"
+        izz="6.16905518839109E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Knee_Tendon_Motor_Right.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Knee_Tendon_Motor_Right.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="KTM_Right"
+    type="revolute">
+    <origin
+      xyz="0 -0.0782499999999959 -0.112750000000001"
+      rpy="0 0 0" />
+    <parent
+      link="Upper_Calf_Right" />
+    <child
+      link="Knee_Tendon_Motor_Right" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="100"
+      velocity="1" />
+  </joint>
+  <link
+    name="Tendon_Upper_Right">
+    <inertial>
+      <origin
+        xyz="-1.46773704301495E-10 0.00601103659179553 0.00163814227692383"
+        rpy="0 0 0" />
+      <mass
+        value="0.137995269006574" />
+      <inertia
+        ixx="0.000387606675771177"
+        ixy="3.9547629461297E-13"
+        ixz="-2.73690312435531E-13"
+        iyy="0.000378944201590401"
+        iyz="5.83152000721183E-05"
+        izz="3.276445580097E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Tendon_Upper_Right.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Tendon_Upper_Right.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Tendon_Motor_Right"
+    type="revolute">
+    <origin
+      xyz="-0.081300385360781 0.019250000000005 -0.0106886547417581"
+      rpy="0 0 0" />
+    <parent
+      link="Knee_Tendon_Motor_Right" />
+    <child
+      link="Tendon_Upper_Right" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="100"
+      velocity="1" />
+  </joint>
+  <link
+    name="Tendon_Lower_Right">
+    <inertial>
+      <origin
+        xyz="-2.22044604925031E-15 -1.11022302462516E-16 -0.0632632733455477"
+        rpy="0 0 0" />
+      <mass
+        value="0.0655179290370533" />
+      <inertia
+        ixx="7.89959219172594E-05"
+        ixy="4.76764708684418E-21"
+        ixz="-2.42876484603144E-18"
+        iyy="8.06721496427806E-05"
+        iyz="-1.33297215878158E-20"
+        izz="1.07975216002142E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Tendon_Lower_Right.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Tendon_Lower_Right.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Tendon_Prismatic_Right"
+    type="prismatic">
+    <origin
+      xyz="0 0.0194999999999909 -0.190749999990024"
+      rpy="0 0 0" />
+    <parent
+      link="Tendon_Upper_Right" />
+    <child
+      link="Tendon_Lower_Right" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-0.08825"
+      upper="1"
+      effort="100"
+      velocity="1" />
+  </joint>
+  <link
+    name="Foot_Right">
+    <inertial>
+      <origin
+        xyz="0.0262161323224976 -0.201959529929967 -0.880200307868134"
+        rpy="0 0 0" />
+      <mass
+        value="0.501174731763404" />
+      <inertia
+        ixx="0.000241704719454475"
+        ixy="-4.58266082530827E-05"
+        ixz="-9.55843337773343E-05"
+        iyy="0.0014552616107505"
+        iyz="4.80522394918783E-06"
+        izz="0.00156727204805535" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Foot_Right.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Foot_Right.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Ankle_Tendon_Right"
+    type="revolute">
+    <origin
+      xyz="0.0855471301679842 0.240366666666685 0.763007046410312"
+      rpy="0 0 0" />
+    <parent
+      link="Tendon_Lower_Right" />
+    <child
+      link="Foot_Right" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.6"
+      upper="1.6"
+      effort="100"
+      velocity="1" />
+  </joint>
+  <link
+    name="Hip_pitch_left">
+    <inertial>
+      <origin
+        xyz="-0.00534101830124301 0.0380535053422394 -0.00958312120670746"
+        rpy="0 0 0" />
+      <mass
+        value="0.555371378501228" />
+      <inertia
+        ixx="0.000826129832245503"
+        ixy="-2.27346384261619E-05"
+        ixz="5.10277936661491E-06"
+        iyy="0.00140202469229018"
+        iyz="6.81981597943023E-05"
+        izz="0.00151257382772618" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Hip_pitch_left.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Hip_pitch_left.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Hip_Forward_Left"
+    type="revolute">
+    <origin
+      xyz="0.0046467447828209 -0.0711333332985556 0.729818387335496"
+      rpy="0 0 0" />
+    <parent
+      link="Center" />
+    <child
+      link="Hip_pitch_left" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="500"
+      velocity="1" />
+  </joint>
+  <link
+    name="Upper_Thigh_Left">
+    <inertial>
+      <origin
+        xyz="-0.00200770579396359 0.000659527263995541 -0.0860346493329625"
+        rpy="0 0 0" />
+      <mass
+        value="0.963249414117772" />
+      <inertia
+        ixx="0.0013400460835535"
+        ixy="6.69796400555501E-07"
+        ixz="4.72286322558693E-06"
+        iyy="0.00113449016004366"
+        iyz="4.25468530168829E-06"
+        izz="0.000468857883559789" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Upper_Thigh_Left.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Upper_Thigh_Left.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Hip_Thigh_left"
+    type="revolute">
+    <origin
+      xyz="-0.00464674478685145 0.0693333333333334 -0.0213183916781092"
+      rpy="0 0 0" />
+    <parent
+      link="Hip_pitch_left" />
+    <child
+      link="Upper_Thigh_Left" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="100"
+      velocity="1" />
+  </joint>
+  <link
+    name="Lower_Thigh_Left">
+    <inertial>
+      <origin
+        xyz="-0.000201426027987228 0.000875191579057577 -0.160010942457514"
+        rpy="0 0 0" />
+      <mass
+        value="0.962966068286372" />
+      <inertia
+        ixx="0.00251869239347175"
+        ixy="-1.67375555677169E-10"
+        ixz="1.40947817108337E-06"
+        iyy="0.00324538966375057"
+        iyz="8.32622846439022E-05"
+        izz="0.00120324718468899" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Lower_Thigh_Left.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Lower_Thigh_Left.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Thigh_Prismatic_Left"
+    type="prismatic">
+    <origin
+      xyz="0 0 -0.257000000000001"
+      rpy="0 0 0" />
+    <parent
+      link="Upper_Thigh_Left" />
+    <child
+      link="Lower_Thigh_Left" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-0.091"
+      upper="0"
+      effort="100"
+      velocity="1" />
+  </joint>
+  <link
+    name="Upper_Calf_Left">
+    <inertial>
+      <origin
+        xyz="-6.02285238413547E-05 0.0084203964682309 -0.12543243644696"
+        rpy="0 0 0" />
+      <mass
+        value="1.01964759861531" />
+      <inertia
+        ixx="0.00202081857576335"
+        ixy="-3.88954074026542E-07"
+        ixz="-6.49678316796038E-06"
+        iyy="0.00186828218982796"
+        iyz="0.000133658804371443"
+        izz="0.00090975951128342" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Upper_Calf_Left.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.647058823529412 0.619607843137255 0.588235294117647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Upper_Calf_Left.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Knee_Left"
+    type="revolute">
+    <origin
+      xyz="0 0.00179999996827107 -0.170500000000004"
+      rpy="0 0 0" />
+    <parent
+      link="Lower_Thigh_Left" />
+    <child
+      link="Upper_Calf_Left" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.6"
+      upper="1.6"
+      effort="100"
+      velocity="1" />
+  </joint>
+  <link
+    name="Lower_Calf_Left">
+    <inertial>
+      <origin
+        xyz="1.53876911213047E-13 -1.51545442861334E-12 -0.0654129552713768"
+        rpy="0 0 0" />
+      <mass
+        value="0.121668100006614" />
+      <inertia
+        ixx="0.000265288052550417"
+        ixy="-1.76592964943337E-19"
+        ixz="-5.3962542019825E-18"
+        iyy="0.000262930775623957"
+        iyz="-2.37661918180967E-19"
+        izz="8.75998339639685E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Lower_Calf_Left.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Lower_Calf_Left.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="Knee_Tendon_Left">
+    <inertial>
+      <origin
+        xyz="-0.041956319391196 6.72056433367318E-05 0.000991224774304578"
+        rpy="0 0 0" />
+      <mass
+        value="0.0405121311271831" />
+      <inertia
+        ixx="3.24918757356946E-06"
+        ixy="-9.33411582787548E-08"
+        ixz="7.43331145404728E-07"
+        iyy="3.7296925971603E-05"
+        iyz="2.20519983378844E-09"
+        izz="3.46951648586277E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Knee_Tendon_Left.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Knee_Tendon_Left.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="KT_Left"
+    type="revolute">
+    <origin
+      xyz="0 0.0469999999969446 -0.0310000000000752"
+      rpy="0 0 0" />
+    <parent
+      link="Upper_Calf_Left" />
+    <child
+      link="Knee_Tendon_Left" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.2"
+      upper="1.2"
+      effort="100"
+      velocity="1" />
+  </joint>
+  <link
+    name="Knee_Tendon_Motor_Left">
+    <inertial>
+      <origin
+        xyz="-0.0403355934535286 -0.000749857313468549 0.000952934864116961"
+        rpy="0 0 0" />
+      <mass
+        value="0.0687760119883092" />
+      <inertia
+        ixx="7.07954856837871E-06"
+        ixy="1.93901657381944E-06"
+        ixz="1.3125069359039E-06"
+        iyy="6.64600151508863E-05"
+        iyz="-4.58095775234154E-08"
+        izz="6.26040123932407E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Knee_Tendon_Motor_Left.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Knee_Tendon_Motor_Left.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="KTM_Left"
+    type="revolute">
+    <origin
+      xyz="0 0.0782499999984161 -0.11274999999999"
+      rpy="0 0 0" />
+    <parent
+      link="Upper_Calf_Left" />
+    <child
+      link="Knee_Tendon_Motor_Left" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-3.14"
+      upper="0"
+      effort="100"
+      velocity="1" />
+  </joint>
+  <link
+    name="Tendon_Upper_Left">
+    <inertial>
+      <origin
+        xyz="1.46929135524942E-10 -0.0060110365931535 0.00163814227692372"
+        rpy="0 0 0" />
+      <mass
+        value="0.137995269006574" />
+      <inertia
+        ixx="0.000387606675771177"
+        ixy="3.95471825657739E-13"
+        ixz="2.73662986111699E-13"
+        iyy="0.000378944201590402"
+        iyz="-5.8315200072118E-05"
+        izz="3.27644558009698E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Tendon_Upper_Left.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Tendon_Upper_Left.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Tendon_Motor_Left"
+    type="revolute">
+    <origin
+      xyz="-0.0819771254947166 -0.01925000000156 0.00193672273680956"
+      rpy="0 0 0" />
+    <parent
+      link="Knee_Tendon_Motor_Left" />
+    <child
+      link="Tendon_Upper_Left" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="100"
+      velocity="1" />
+  </joint>
+  <link
+    name="Tendon_Lower_Left">
+    <inertial>
+      <origin
+        xyz="3.40394379350073E-13 -2.05657713081564E-12 -0.0632632733455479"
+        rpy="0 0 0" />
+      <mass
+        value="0.0655179290370531" />
+      <inertia
+        ixx="7.89959219172589E-05"
+        ixy="8.14470827795275E-20"
+        ixz="-2.46397969698637E-18"
+        iyy="8.067214964278E-05"
+        iyz="9.78872748816102E-21"
+        izz="1.07975216002142E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Tendon_Lower_Left.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Tendon_Lower_Left.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Tendon_Prismatic_Left"
+    type="prismatic">
+    <origin
+      xyz="0 -0.0194999999993296 -0.190749995657338"
+      rpy="0 0 0" />
+    <parent
+      link="Tendon_Upper_Left" />
+    <child
+      link="Tendon_Lower_Left" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-0.08825"
+      upper="0"
+      effort="100"
+      velocity="1" />
+  </joint>
+  <link
+    name="Foot_Left">
+    <inertial>
+      <origin
+        xyz="0.107791644150905 -0.0161764617599224 -0.0341702655805776"
+        rpy="0 0 0" />
+      <mass
+        value="0.501174276786309" />
+      <inertia
+        ixx="0.000243992859198893"
+        ixy="4.4542776844078E-05"
+        ixz="0.000110290640706284"
+        iyy="0.00145526025737685"
+        iyz="-1.1792933804865E-05"
+        izz="0.00156498241791239" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Foot_Left.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 0.949019607843137 0.898039215686275 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="model://growbot_base/meshes/Foot_Left.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Ankle_Tendon_Left"
+    type="revolute">
+    <origin
+      xyz="0 -0.0222500000007995 -0.0999999999999869"
+      rpy="0 0 0" />
+    <parent
+      link="Tendon_Lower_Left" />
+    <child
+      link="Foot_Left" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.6"
+      upper="1.6"
+      effort="100"
+      velocity="1" />
+  </joint>
+</robot>
