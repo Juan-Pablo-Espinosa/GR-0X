@@ -496,6 +496,13 @@ class RobstrideMotor:
 
         Returns (ext_id, data) or None on timeout.
         """
+        # Note: Robstride RS03 firmware packs device UID bytes into the reply
+        # CAN ID bits (e.g. 0x1BBB8D68 for a Type 0 reply where 0xBB8D68 is
+        # part of the MCU UID). We do not filter by motor_id on the reply
+        # because the reply-ID byte layout is response-type-specific and does
+        # not always match the request layout. On a single-motor bus this is
+        # fine; for multi-motor buses, filter at the application layer by
+        # comparing the returned MCU UID or state to the motor you addressed.
         deadline = time.monotonic() + timeout
         while time.monotonic() < deadline:
             remaining = max(0.0, deadline - time.monotonic())
@@ -505,16 +512,10 @@ class RobstrideMotor:
             ext_id, extended, data = frame
             if not extended:
                 continue
-            reply_type = (ext_id >> 24) & 0x1F
-            reply_motor = ext_id & 0xFF
-            # Robstride replies address us back on either the motor_id field or
-            # by echoing into the reply frame. The safest check is "is this
-            # related to our motor at all?" — either end of the ID matches.
-            field_lo = (ext_id >> 8) & 0xFF
-            if reply_motor not in (self.motor_id, self.host_id) and field_lo != self.motor_id:
-                continue
-            if expected_type is not None and reply_type != expected_type:
-                continue
+            if expected_type is not None:
+                reply_type = (ext_id >> 24) & 0x1F
+                if reply_type != expected_type:
+                    continue
             return ext_id, data
         return None
 
